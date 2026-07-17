@@ -1310,3 +1310,12 @@
   border: 3px solid var(--ert-gold);
   box-shadow: 0 10px 24px rgba(0,0,0,.2);
 }
+
+
+/* --- full-height layout under a 120px navbar, square outer frame --- */
+
+[data-ring-toss-game] {
+  height: calc(100vh - 120px);
+  height: calc(100dvh - 120px);
+  border-radius: 0;
+}
