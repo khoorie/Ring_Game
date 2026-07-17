@@ -1364,3 +1364,23 @@
   top: 1%;
   height: 80%;
 }
+
+
+/* --- bigger point badges, same on-screen size at every depth --- */
+
+/* Counter-scaling by 1/--s cancels the target's depth scale, so back-row
+   badges read as large as front-row ones. */
+.ert-value {
+  min-width: 34px;
+  padding: 4px 8px;
+  font-size: 13px;
+  transform: translateX(-50%) scale(calc(1 / var(--s)));
+  transform-origin: center top;
+}
+
+
+/* --- point badges nudged lower --- */
+
+.ert-value {
+  bottom: -18px;
+}
