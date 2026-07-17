@@ -1343,6 +1343,35 @@
     linear-gradient(#fdf7ea 0 13.5%, #e6d9bc 13.5% 15%, #9a6d40 15% 16.5%, #8a613a 16.5% 100%);
 }
 
+
+/* --- board and wood reach nearly to the top; fingers spread higher --- */
+
+.ert-board {
+  top: 3%;
+  height: 78%;
+}
+
+/* Ivory back wall is a thin strip; wood owns the stage from 10% down. */
+.ert-stage {
+  background:
+    radial-gradient(140% 70% at 50% 0%, rgba(255,255,255,.55), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(46,26,10,.14) 0 2px, transparent 2px 11px, rgba(46,26,10,.07) 11px 13px, transparent 13px 30px) 0 100% / 100% 92% no-repeat,
+    linear-gradient(#fdf7ea 0 7%, #e6d9bc 7% 8.5%, #9a6d40 8.5% 10%, #8a613a 10% 100%);
+}
+
+/* Taller target zone spreads the five rows toward the top of the stage. */
+.ert-targets {
+  inset: 8% 4% 26%;
+}
+
+
+/* --- board hugs the very top of the stage --- */
+
+.ert-board {
+  top: 1%;
+  height: 80%;
+}
+
     html, body { margin: 0; min-height: 100%; background: #f4e6dc; }
     body { padding: 0; }
   </style>
