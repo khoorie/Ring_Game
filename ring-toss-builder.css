@@ -1,0 +1,1055 @@
+[data-ring-toss-game],
+[data-ring-toss-game] * {
+  box-sizing: border-box;
+}
+
+[data-ring-toss-game] {
+  --ert-ink: #341225;
+  --ert-cream: #fff8ec;
+  --ert-red: #bd2345;
+  --ert-pink: #f8a8b8;
+  --ert-gold: #f2bb4a;
+  --ert-teal: #11626b;
+  position: relative;
+  width: min(100%, 480px);
+  height: min(820px, calc(100dvh - 24px));
+  min-height: 590px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(52, 18, 37, .12);
+  border-radius: 26px;
+  background: var(--ert-cream);
+  color: var(--ert-ink);
+  font-family: Montserrat, Arial, sans-serif;
+  box-shadow: 0 18px 50px rgba(52, 18, 37, .18);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ert-hud {
+  height: 92px;
+  padding: 15px 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background:
+    radial-gradient(circle at 15% -30%, rgba(255,255,255,.35), transparent 44%),
+    linear-gradient(135deg, #9f1839, #d62e54);
+  color: #fff;
+  border-bottom: 4px solid var(--ert-gold);
+}
+
+.ert-brand {
+  min-width: 0;
+  line-height: 1.05;
+}
+
+.ert-brand-kicker {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+.ert-brand strong {
+  display: block;
+  max-width: 160px;
+  font-family: Georgia, serif;
+  font-size: clamp(18px, 5vw, 24px);
+}
+
+.ert-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(46px, 1fr));
+  gap: 5px;
+}
+
+.ert-stats div {
+  min-width: 48px;
+  padding: 7px 5px 6px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 10px;
+  background: rgba(69, 3, 27, .28);
+}
+
+.ert-stats span {
+  display: block;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .78;
+}
+
+.ert-stats strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ert-stage {
+  position: relative;
+  height: calc(100% - 136px);
+  min-height: 450px;
+  overflow: hidden;
+  touch-action: none;
+  background:
+    radial-gradient(circle at 50% 7%, rgba(255, 236, 163, .85), transparent 22%),
+    linear-gradient(#2c7185 0 23%, #135b6b 23% 25%, #0c4853 25% 100%);
+}
+
+.ert-lights {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 54px;
+  background:
+    radial-gradient(circle, #ffe69a 0 4px, transparent 5px) 5px 8px / 32px 28px repeat-x;
+  filter: drop-shadow(0 0 7px rgba(255, 223, 125, .85));
+  opacity: .9;
+}
+
+.ert-stage-title {
+  position: absolute;
+  z-index: 2;
+  top: 38px;
+  left: 50%;
+  width: 84%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff9d9;
+  text-shadow: 0 2px 0 rgba(52,18,37,.35);
+}
+
+.ert-stage-title span,
+.ert-stage-title strong {
+  display: block;
+  text-transform: uppercase;
+}
+
+.ert-stage-title span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .22em;
+}
+
+.ert-stage-title strong {
+  margin-top: 3px;
+  font-family: Georgia, serif;
+  font-size: clamp(17px, 5vw, 24px);
+  letter-spacing: .04em;
+}
+
+.ert-board {
+  position: absolute;
+  z-index: 1;
+  left: 4%;
+  right: 4%;
+  top: 15%;
+  height: 58%;
+  border: 4px solid #dcae50;
+  border-radius: 28px 28px 16px 16px;
+  transform: perspective(620px) rotateX(12deg);
+  transform-origin: center bottom;
+  background:
+    radial-gradient(ellipse at center, rgba(255,255,255,.08), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 18px),
+    linear-gradient(#1e7b77, #105a5e);
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.14),
+    0 20px 28px rgba(10,31,43,.32);
+}
+
+.ert-targets {
+  position: absolute;
+  z-index: 3;
+  inset: 15% 4% 27%;
+}
+
+.ert-target {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 52px;
+  height: 112px;
+  transform: translate(-50%, -50%) scale(var(--s));
+  transform-origin: center bottom;
+  filter: drop-shadow(0 9px 5px rgba(0,0,0,.2));
+}
+
+.ert-finger {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 13px;
+  width: 34px;
+  height: 90px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(110,53,47,.27);
+  border-radius: 18px 18px 11px 11px;
+  background:
+    linear-gradient(90deg, rgba(145,76,66,.18), transparent 20% 78%, rgba(145,76,66,.17)),
+    linear-gradient(#f7c6aa, #e9a987);
+  box-shadow: inset 0 2px 5px rgba(255,255,255,.5);
+}
+
+.ert-finger::before,
+.ert-finger::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  height: 1px;
+  background: rgba(123,65,59,.22);
+  box-shadow: 0 4px 0 rgba(123,65,59,.15);
+}
+
+.ert-finger::before { top: 50px; }
+.ert-finger::after { top: 66px; }
+
+.ert-finger i {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 20px;
+  height: 26px;
+  border-radius: 12px 12px 8px 8px;
+  background: linear-gradient(#ffcad4, #e97891);
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.7);
+}
+
+.ert-base {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 4px;
+  width: 50px;
+  height: 18px;
+  transform: translateX(-50%);
+  border: 3px solid #d8a84d;
+  border-radius: 50%;
+  background: #0b4449;
+}
+
+.ert-value {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: -10px;
+  min-width: 30px;
+  padding: 3px 5px;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  background: #fff5d0;
+  color: #6d2740;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0,0,0,.16);
+}
+
+.ert-target.is-hit .ert-finger {
+  animation: ertTargetHit .42s ease both;
+}
+
+.ert-target.is-hit .ert-value {
+  background: var(--ert-gold);
+}
+
+.ert-landed-ring {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 51px;
+  width: 46px;
+  height: 18px;
+  transform: translateX(-50%);
+  border: 5px solid #f8d36b;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 1px #b57913,
+    0 2px 4px rgba(0,0,0,.3);
+}
+
+.ert-landed-ring::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  width: 13px;
+  height: 13px;
+  transform: translateX(-50%) rotate(45deg);
+  border: 2px solid #e3f9ff;
+  background: linear-gradient(135deg, #fff, #9bd5e6);
+  box-shadow: 0 0 8px rgba(255,255,255,.95);
+}
+
+.ert-launch-zone {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 29%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding-bottom: 18px;
+  background:
+    linear-gradient(transparent, rgba(8,40,47,.48) 35%, rgba(7,31,39,.9));
+}
+
+.ert-swipe-copy {
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.92);
+  color: var(--ert-ink);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(0,0,0,.18);
+  transition: opacity .2s ease;
+}
+
+.ert-launch-ring,
+.ert-air-ring {
+  width: 92px;
+  height: 40px;
+  border: 9px solid #f3c454;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow:
+    inset 0 0 0 2px #a86d12,
+    0 7px 12px rgba(0,0,0,.3),
+    0 0 0 2px rgba(255,244,182,.35);
+}
+
+.ert-launch-ring {
+  position: relative;
+  display: block;
+  padding: 0;
+  appearance: none;
+  cursor: grab;
+  touch-action: none;
+  transform-origin: center;
+  transition: filter .2s ease, opacity .2s ease;
+}
+
+.ert-launch-ring:active {
+  cursor: grabbing;
+}
+
+.ert-launch-ring:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+
+.ert-launch-ring[disabled] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ert-diamond {
+  position: absolute;
+  left: 50%;
+  top: -26px;
+  width: 26px;
+  height: 26px;
+  transform: translateX(-50%) rotate(45deg);
+  border: 3px solid #e7fbff;
+  border-radius: 5px;
+  background:
+    linear-gradient(135deg, #fff 0 30%, #bce9f5 31% 61%, #fff 62%);
+  box-shadow:
+    0 0 13px rgba(255,255,255,.95),
+    0 4px 8px rgba(0,0,0,.18);
+}
+
+.ert-diamond::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(83,143,161,.45);
+}
+
+.ert-air-ring {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  display: none;
+  margin: -20px 0 0 -46px;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.ert-air-ring.is-flying {
+  display: block;
+}
+
+.ert-aim-line {
+  position: absolute;
+  z-index: 7;
+  left: 0;
+  top: 0;
+  display: none;
+  width: 0;
+  height: 3px;
+  transform-origin: left center;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.95) 0 9px, transparent 9px 16px);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+  pointer-events: none;
+}
+
+.ert-aim-line.is-visible {
+  display: block;
+}
+
+.ert-feedback {
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  top: 23%;
+  transform: translate(-50%, -50%) scale(.82);
+  opacity: 0;
+  color: #fff;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 9vw, 44px);
+  font-weight: 800;
+  white-space: nowrap;
+  text-shadow:
+    0 3px 0 #8f1735,
+    0 7px 15px rgba(0,0,0,.3);
+  pointer-events: none;
+}
+
+.ert-feedback.is-showing {
+  animation: ertFeedback .82s ease both;
+}
+
+.ert-overlay {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: rgba(33, 10, 24, .72);
+  backdrop-filter: blur(7px);
+}
+
+.ert-overlay.is-visible {
+  display: grid;
+}
+
+.ert-card {
+  width: min(100%, 330px);
+  padding: 27px 24px 24px;
+  border: 3px solid var(--ert-gold);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 50% 0, #fff, transparent 42%),
+    var(--ert-cream);
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(0,0,0,.3);
+}
+
+.ert-card-icon {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 46px;
+}
+
+.ert-card h2 {
+  margin: 0 0 10px;
+  font-family: Georgia, serif;
+  font-size: 30px;
+  color: var(--ert-red);
+}
+
+.ert-card p {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ert-card button,
+.ert-footer button {
+  border: 0;
+  border-radius: 999px;
+  background: var(--ert-red);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ert-card button {
+  min-width: 160px;
+  min-height: 48px;
+  padding: 12px 20px;
+  box-shadow: 0 5px 0 #7d1832;
+}
+
+.ert-card button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #7d1832;
+}
+
+.ert-result-label {
+  margin-bottom: 2px !important;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-size: 11px !important;
+  font-weight: 800;
+}
+
+.ert-final-score {
+  display: block;
+  margin-bottom: 9px;
+  font-family: Georgia, serif;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--ert-red);
+}
+
+.ert-footer {
+  height: 44px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff9ee;
+  font-size: 12px;
+}
+
+.ert-footer button {
+  padding: 7px 13px;
+  background: var(--ert-ink);
+  font-size: 11px;
+}
+
+@keyframes ertTargetHit {
+  0%, 100% { transform: translateX(-50%) rotate(0); }
+  35% { transform: translateX(-50%) rotate(-7deg); }
+  65% { transform: translateX(-50%) rotate(6deg); }
+}
+
+@keyframes ertFeedback {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.65); }
+  25%, 72% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -65%) scale(1.12); }
+}
+
+@media (max-height: 680px) {
+  [data-ring-toss-game] {
+    min-height: 540px;
+  }
+
+  .ert-hud {
+    height: 78px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+
+  .ert-stage {
+    height: calc(100% - 120px);
+  }
+
+  .ert-targets {
+    bottom: 25%;
+  }
+
+  .ert-launch-zone {
+    height: 27%;
+    padding-bottom: 12px;
+  }
+
+  .ert-swipe-copy {
+    margin-bottom: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ert-target.is-hit .ert-finger,
+  .ert-feedback.is-showing {
+    animation-duration: .01ms;
+  }
+}
+
+/* --- separate toss ring and landed ring styles --- */
+
+/* Toss / flying / intro ring: keep these as one CSS ring system. */
+.ert-diamond {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: -28px;
+  width: 28px;
+  height: 28px;
+  transform: translateX(-50%);
+  border: 3px solid #eefcff;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #ffffff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #ffffff 0 14%, #c7eff8 45%, #89c8dc 70%, #ffffff 100%);
+  box-shadow:
+    0 0 13px rgba(255,255,255,.95),
+    0 4px 8px rgba(0,0,0,.18);
+}
+
+.ert-diamond::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(83,143,161,.35);
+  border-radius: 50% !important;
+}
+
+/* Landed ring uses its own separate CSS ring system. */
+.ert-landed-ring {
+  position: absolute;
+  left: 50%;
+  top: 45px;
+  width: 30px;
+  height: 18px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.ert-landed-back,
+.ert-landed-front {
+  position: absolute;
+  left: 50%;
+  width: 30px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 3px solid #d7a64a;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.ert-landed-back {
+  top: 4px;
+  z-index: 1;
+  opacity: .95;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.32),
+    0 1px 2px rgba(0,0,0,.12);
+}
+
+.ert-landed-front {
+  top: 7px;
+  z-index: 3;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.42),
+    0 2px 3px rgba(0,0,0,.18);
+  clip-path: inset(52% 0 0 0);
+}
+
+.ert-landed-diamond {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 11px;
+  height: 11px;
+  transform: translateX(-50%);
+  z-index: 4;
+  border: 2px solid #e3f9ff;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #ffffff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #ffffff 0 14%, #c7eff8 45%, #89c8dc 70%, #ffffff 100%);
+  box-shadow:
+    0 0 7px rgba(255,255,255,.9),
+    0 1px 2px rgba(0,0,0,.14);
+}
+
+.ert-target.is-hit .ert-finger {
+  z-index: 2;
+}
+
+
+/* --- planned landed ring: single top-half band --- */
+
+/* Landed ring only: sized from the 34px-wide finger. */
+.ert-landed-ring {
+  position: absolute;
+  left: 50%;
+  top: 46px;
+  width: 38px;
+  height: 18px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.ert-landed-band {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 38px;
+  height: 14px;
+  transform: translateX(-50%);
+  border: 3px solid #d7a64a;
+  border-radius: 50%;
+  background: transparent;
+  clip-path: inset(0 0 50% 0);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.4),
+    0 1px 2px rgba(0,0,0,.18);
+}
+
+.ert-landed-diamond {
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 2px solid #e3f9ff;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #fff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #fff 0 14%, #c7eff8 45%, #89c8dc 70%, #fff 100%);
+  box-shadow:
+    0 0 7px rgba(255,255,255,.9),
+    0 1px 2px rgba(0,0,0,.14);
+}
+
+/* Neutralize the previous landed-ring layers. */
+.ert-landed-back,
+.ert-landed-front {
+  display: none !important;
+}
+
+
+/* --- landed ring behind-finger fix --- */
+
+/* Remove every older landed-ring visual so only the new system renders. */
+.ert-landed-ring {
+  position: absolute;
+  left: 50%;
+  top: 46px;
+  width: 40px;
+  height: 18px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+.ert-landed-ring::before,
+.ert-landed-ring::after {
+  content: none !important;
+  display: none !important;
+}
+
+.ert-landed-back,
+.ert-landed-front {
+  display: none !important;
+}
+
+/* Full oval sits behind the finger. The finger masks the center,
+   leaving the complete curved ends visible on both sides. */
+.ert-landed-band {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 40px;
+  height: 14px;
+  transform: translateX(-50%);
+  border: 3px solid #d7a64a;
+  border-radius: 50%;
+  background: transparent;
+  clip-path: none !important;
+  z-index: 1;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.4),
+    0 1px 2px rgba(0,0,0,.18);
+}
+
+/* Finger sits above the band and naturally hides the middle width. */
+.ert-target.is-hit .ert-finger {
+  z-index: 2;
+}
+
+/* Round diamond remains in front of the finger. */
+.ert-landed-diamond {
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  z-index: 4;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 2px solid #e3f9ff;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #fff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #fff 0 14%, #c7eff8 45%, #89c8dc 70%, #fff 100%);
+  box-shadow:
+    0 0 7px rgba(255,255,255,.9),
+    0 1px 2px rgba(0,0,0,.14);
+}
+
+
+/* --- landed ring front-arc fix --- */
+
+/* Full oval remains behind the finger, preserving the curved side ends. */
+.ert-landed-ring {
+  position: absolute;
+  left: 50%;
+  top: 46px;
+  width: 40px;
+  height: 18px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+.ert-landed-ring::before,
+.ert-landed-ring::after {
+  content: none !important;
+  display: none !important;
+}
+
+.ert-landed-band {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 40px;
+  height: 14px;
+  transform: translateX(-50%);
+  border: 3px solid #d7a64a;
+  border-radius: 50%;
+  background: transparent;
+  clip-path: none !important;
+  z-index: 1;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.4),
+    0 1px 2px rgba(0,0,0,.18);
+}
+
+/* The finger covers the middle of the rear oval. */
+.ert-target.is-hit .ert-finger {
+  z-index: 2;
+}
+
+/* This front arc restores the visible band across the finger. */
+.ert-landed-front-arc {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 34px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-bottom: 3px solid #d7a64a;
+  border-radius: 0 0 50% 50%;
+  z-index: 3;
+  box-shadow: 0 1px 2px rgba(0,0,0,.14);
+}
+
+.ert-landed-diamond {
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  z-index: 4;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 2px solid #e3f9ff;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #fff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #fff 0 14%, #c7eff8 45%, #89c8dc 70%, #fff 100%);
+  box-shadow:
+    0 0 7px rgba(255,255,255,.9),
+    0 1px 2px rgba(0,0,0,.14);
+}
+
+
+/* --- landed ring stacking correction --- */
+
+/* Do not create a stacking context on the wrapper. This lets the rear band
+   sit behind the finger while the front arc and diamond sit above it. */
+.ert-landed-ring {
+  position: absolute;
+  left: 50%;
+  top: 46px;
+  width: 40px;
+  height: 18px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+.ert-landed-ring::before,
+.ert-landed-ring::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Rear oval: full curve and side returns, behind the finger. */
+.ert-landed-band {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 40px;
+  height: 14px;
+  transform: translateX(-50%);
+  border: 3px solid #d7a64a;
+  border-radius: 50%;
+  background: transparent;
+  clip-path: none !important;
+  z-index: 1;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.4),
+    0 1px 2px rgba(0,0,0,.18);
+}
+
+/* Finger is between the rear oval and the visible front arc. */
+.ert-target.is-hit .ert-finger {
+  z-index: 2;
+}
+
+/* Visible lower/front curve across the finger. */
+.ert-landed-front-arc {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 34px;
+  height: 9px;
+  transform: translateX(-50%);
+  border: 0;
+  border-bottom: 3px solid #d7a64a;
+  border-radius: 0 0 50% 50%;
+  z-index: 3;
+  box-shadow: 0 1px 2px rgba(0,0,0,.14);
+}
+
+/* Landed stone is always round. */
+.ert-landed-diamond {
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  z-index: 4;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 2px solid #e3f9ff;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #fff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #fff 0 14%, #c7eff8 45%, #89c8dc 70%, #fff 100%);
+  box-shadow:
+    0 0 7px rgba(255,255,255,.9),
+    0 1px 2px rgba(0,0,0,.14);
+}
+
+
+/* --- FINAL landed ring reset: single front band + round diamond --- */
+
+/* Disable every older landed-ring visual. */
+.ert-landed-ring,
+.ert-landed-ring::before,
+.ert-landed-ring::after,
+.ert-landed-band,
+.ert-landed-back,
+.ert-landed-front {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  mask: none !important;
+}
+
+.ert-landed-ring::before,
+.ert-landed-ring::after,
+.ert-landed-band,
+.ert-landed-back,
+.ert-landed-front {
+  display: none !important;
+}
+
+.ert-landed-ring {
+  position: absolute !important;
+  left: 50% !important;
+  top: 47px !important;
+  width: 38px !important;
+  height: 18px !important;
+  transform: translateX(-50%) !important;
+  z-index: 8 !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+/* The landed band is intentionally not an oval.
+   It is one continuous top curve with both side returns and no bottom. */
+.ert-landed-front-arc {
+  display: block !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 5px !important;
+  width: 38px !important;
+  height: 11px !important;
+  transform: translateX(-50%) !important;
+  z-index: 8 !important;
+  border-top: 4px solid #d7a64a !important;
+  border-left: 4px solid #d7a64a !important;
+  border-right: 4px solid #d7a64a !important;
+  border-bottom: 0 !important;
+  border-radius: 50% 50% 0 0 !important;
+  background: transparent !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.42),
+    0 2px 3px rgba(0,0,0,.18) !important;
+  clip-path: none !important;
+}
+
+/* Landed diamond: round only. */
+.ert-landed-diamond {
+  display: block !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: -1px !important;
+  width: 12px !important;
+  height: 12px !important;
+  transform: translateX(-50%) !important;
+  z-index: 9 !important;
+  border: 2px solid #e3f9ff !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 35% 30%, #fff 0 18%, rgba(255,255,255,.9) 19% 30%, transparent 31%),
+    radial-gradient(circle at 55% 55%, #fff 0 14%, #c7eff8 45%, #89c8dc 70%, #fff 100%) !important;
+  box-shadow:
+    0 0 7px rgba(255,255,255,.9),
+    0 1px 2px rgba(0,0,0,.14) !important;
+}
+
+.ert-landed-diamond::before,
+.ert-landed-diamond::after {
+  border-radius: 50% !important;
+  transform: none !important;
+}

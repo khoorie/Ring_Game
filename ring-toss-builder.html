@@ -1,0 +1,101 @@
+<div class="ert-game" data-ring-toss-game data-rings="10">
+  <div class="ert-hud">
+    <div class="ert-brand">
+      <strong>PUT A RING ON IT!</strong>
+    </div>
+
+    <div class="ert-stats" aria-live="polite">
+      <div><span>Score</span><strong data-ert-score>0</strong></div>
+      <div><span>Rings</span><strong data-ert-rings>10</strong></div>
+      <div><span>Streak</span><strong data-ert-streak>0</strong></div>
+    </div>
+  </div>
+
+  <div class="ert-stage" data-ert-stage aria-label="Engagement ring toss game">
+    <div class="ert-lights" aria-hidden="true"></div>
+    <div class="ert-stage-title" aria-hidden="true">
+      <span>True love is</span>
+      <strong>worth aiming for</strong>
+    </div>
+
+    <div class="ert-board" aria-hidden="true"></div>
+
+    <div class="ert-targets">
+      <div class="ert-target" data-points="50" style="--x:22%;--y:22%;--s:.72">
+        <span class="ert-value">50</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="75" style="--x:50%;--y:19%;--s:.66">
+        <span class="ert-value">75</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="50" style="--x:78%;--y:22%;--s:.72">
+        <span class="ert-value">50</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+
+      <div class="ert-target" data-points="30" style="--x:13%;--y:40%;--s:.84">
+        <span class="ert-value">30</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="40" style="--x:38%;--y:37%;--s:.80">
+        <span class="ert-value">40</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="40" style="--x:62%;--y:37%;--s:.80">
+        <span class="ert-value">40</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="30" style="--x:87%;--y:40%;--s:.84">
+        <span class="ert-value">30</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+
+      <div class="ert-target" data-points="20" style="--x:25%;--y:58%;--s:1">
+        <span class="ert-value">20</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="25" style="--x:50%;--y:55%;--s:.96">
+        <span class="ert-value">25</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+      <div class="ert-target" data-points="20" style="--x:75%;--y:58%;--s:1">
+        <span class="ert-value">20</span><span class="ert-finger"><i></i></span><span class="ert-base"></span>
+      </div>
+    </div>
+
+    <div class="ert-aim-line" data-ert-aim aria-hidden="true"></div>
+
+    <div class="ert-air-ring" data-ert-air-ring aria-hidden="true">
+      <span class="ert-band-gloss" aria-hidden="true"></span>
+      <span class="ert-diamond"></span>
+    </div>
+
+    <div class="ert-feedback" data-ert-feedback aria-live="polite"></div>
+
+    <div class="ert-launch-zone">
+      <div class="ert-swipe-copy" data-ert-instruction>
+        Drag the ring upward and release
+      </div>
+      <button class="ert-launch-ring" data-ert-launch type="button" aria-label="Swipe this engagement ring upward to toss it">
+        <span class="ert-band-gloss" aria-hidden="true"></span>
+        <span class="ert-diamond"></span>
+      </button>
+    </div>
+
+    <div class="ert-overlay is-visible" data-ert-intro>
+      <div class="ert-card">
+        <span class="ert-card-icon ert-card-ring" aria-hidden="true"><span class="ert-band-gloss" aria-hidden="true"></span><span class="ert-diamond"></span></span>
+        <h2>PUT A RING ON IT!</h2>
+        <p>Swipe the engagement ring onto a finger. Smaller, farther fingers score more points.</p>
+        <button type="button" data-ert-start>Start game</button>
+      </div>
+    </div>
+
+    <div class="ert-overlay" data-ert-results>
+      <div class="ert-card">
+        <span class="ert-card-icon" aria-hidden="true">✨</span>
+        <p class="ert-result-label">Final score</p>
+        <strong class="ert-final-score" data-ert-final-score>0</strong>
+        <p data-ert-best-copy>Your best: 0</p>
+        <button type="button" data-ert-play-again>Play again</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ert-footer">
+    <span>Best: <strong data-ert-best>0</strong></span>
+    <button type="button" data-ert-reset>Restart</button>
+  </div>
+</div>
