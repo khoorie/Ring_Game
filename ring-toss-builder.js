@@ -39,6 +39,7 @@
     var gameStarted = false;
     var startPoint = null;
     var pointerId = null;
+    var swipeSamples = [];
     var bestStorageKey = "engagementRingTossBest";
     var best = 0;
     var audioContext = null;
@@ -108,6 +109,7 @@
       isDragging = false;
       isFlying = false;
       pointerId = null;
+      swipeSamples = [];
     }
 
     function resetGame(showIntro) {
@@ -123,7 +125,7 @@
       });
       results.classList.remove("is-visible");
       intro.classList.toggle("is-visible", !!showIntro);
-      setInstruction("Drag the ring upward and release");
+      setInstruction("Flick the ring in any direction");
       resetLaunchRing();
       updateHud();
     }
@@ -132,7 +134,7 @@
       gameStarted = true;
       intro.classList.remove("is-visible");
       results.classList.remove("is-visible");
-      setInstruction("Drag the ring upward and release");
+      setInstruction("Flick the ring in any direction");
       updateHud();
       launchRing.focus({ preventScroll: true });
     }
@@ -206,16 +208,16 @@
         '<span class="ert-landed-diamond" aria-hidden="true"></span>';
       target.appendChild(landedRing);
 
-      showFeedback("+" + earned);
-      setInstruction(streak > 1 ? streak + " in a row!" : "Perfect fit!");
+      showFeedback("She Said Yes!");
+      setInstruction("+" + earned + (streak > 1 ? " — " + streak + " in a row!" : " points!"));
       playTone(true);
       if (navigator.vibrate) navigator.vibrate(28);
     }
 
     function missTarget() {
       streak = 0;
-      showFeedback("So close!");
-      setInstruction("Aim for the middle of a finger");
+      showFeedback("She Said No…");
+      setInstruction("Flick toward the middle of a finger");
       playTone(false);
     }
 
@@ -281,11 +283,21 @@
     function onPointerDown(event) {
       if (!gameStarted || isFlying || ringsLeft <= 0) return;
 
+      var stageRect = stage.getBoundingClientRect();
       isDragging = true;
       pointerId = event.pointerId;
       startPoint = getLaunchCenter();
-      launchRing.setPointerCapture(pointerId);
-      setInstruction("Release to toss");
+      swipeSamples = [{
+        x: event.clientX - stageRect.left,
+        y: event.clientY - stageRect.top,
+        t: event.timeStamp
+      }];
+      try {
+        stage.setPointerCapture(pointerId);
+      } catch (error) {
+        // Pointer capture is optional.
+      }
+      setInstruction("Flick toward a finger");
       event.preventDefault();
     }
 
@@ -295,23 +307,30 @@
       var stageRect = stage.getBoundingClientRect();
       var current = {
         x: event.clientX - stageRect.left,
-        y: event.clientY - stageRect.top
+        y: event.clientY - stageRect.top,
+        t: event.timeStamp
       };
-      var dx = current.x - startPoint.x;
-      var dy = current.y - startPoint.y;
+      swipeSamples.push(current);
+      while (swipeSamples.length > 2 && current.t - swipeSamples[0].t > 160) {
+        swipeSamples.shift();
+      }
+
+      var first = swipeSamples[0];
+      var dx = current.x - first.x;
+      var dy = current.y - first.y;
       var distance = Math.hypot(dx, dy);
       var angle = Math.atan2(dy, dx) * 180 / Math.PI;
 
       launchRing.style.transform =
         "translate3d(" + clamp(dx * 0.22, -42, 42) + "px," +
-        clamp(dy * 0.16, -36, 12) + "px,0) rotate(" +
+        clamp(dy * 0.16, -36, 36) + "px,0) rotate(" +
         clamp(dx * 0.12, -14, 14) + "deg)";
 
       aimLine.style.left = startPoint.x + "px";
       aimLine.style.top = startPoint.y + "px";
-      aimLine.style.width = Math.min(distance, stage.clientHeight * 0.38) + "px";
+      aimLine.style.width = Math.min(distance * 1.6, stage.clientHeight * 0.38) + "px";
       aimLine.style.transform = "rotate(" + angle + "deg)";
-      aimLine.classList.toggle("is-visible", dy < -12);
+      aimLine.classList.toggle("is-visible", distance > 14);
       event.preventDefault();
     }
 
@@ -320,7 +339,7 @@
 
       isDragging = false;
       try {
-        launchRing.releasePointerCapture(pointerId);
+        stage.releasePointerCapture(pointerId);
       } catch (error) {
         // Pointer may already be released.
       }
@@ -328,23 +347,26 @@
       var stageRect = stage.getBoundingClientRect();
       var release = {
         x: event.clientX - stageRect.left,
-        y: event.clientY - stageRect.top
+        y: event.clientY - stageRect.top,
+        t: event.timeStamp
       };
-      var dx = release.x - startPoint.x;
-      var dy = release.y - startPoint.y;
+      var first = swipeSamples[0] || release;
+      var dx = release.x - first.x;
+      var dy = release.y - first.y;
       var swipeDistance = Math.hypot(dx, dy);
+      var elapsed = Math.max(release.t - first.t, 16);
+      var speed = swipeDistance / elapsed;
 
-      if (dy > -38 || swipeDistance < 55) {
-        setInstruction("Swipe farther upward");
+      if (swipeDistance < 24 || speed < 0.25) {
+        setInstruction("Flick faster to toss the ring");
         resetLaunchRing();
         return;
       }
 
-      var power = clamp(swipeDistance / (stage.clientHeight * 0.34), 0.55, 1.35);
-      var multiplier = 1.82 + power * 0.46;
-      var endX = clamp(startPoint.x + dx * multiplier, 26, stage.clientWidth - 26);
-      var endY = clamp(startPoint.y + dy * multiplier, stage.clientHeight * 0.13, stage.clientHeight * 0.67);
-      var duration = clamp(860 - power * 170, 590, 780);
+      var throwDistance = clamp(speed * 340, stage.clientHeight * 0.3, stage.clientHeight * 1.05);
+      var endX = clamp(startPoint.x + (dx / swipeDistance) * throwDistance, 26, stage.clientWidth - 26);
+      var endY = clamp(startPoint.y + (dy / swipeDistance) * throwDistance, stage.clientHeight * 0.1, stage.clientHeight * 0.92);
+      var duration = clamp(430 + throwDistance * 0.55, 560, 820);
 
       animateToss(startPoint, { x: endX, y: endY }, duration);
       event.preventDefault();
@@ -364,10 +386,10 @@
       startGame();
     });
 
-    launchRing.addEventListener("pointerdown", onPointerDown);
-    launchRing.addEventListener("pointermove", onPointerMove);
-    launchRing.addEventListener("pointerup", onPointerUp);
-    launchRing.addEventListener("pointercancel", onPointerCancel);
+    stage.addEventListener("pointerdown", onPointerDown);
+    stage.addEventListener("pointermove", onPointerMove);
+    stage.addEventListener("pointerup", onPointerUp);
+    stage.addEventListener("pointercancel", onPointerCancel);
 
     updateHud();
   }
